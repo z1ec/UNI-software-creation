@@ -1,3 +1,12 @@
+TRUNCATE TABLE
+  review,
+  discounts,
+  rating,
+  product_variants,
+  product_content,
+  products
+RESTART IDENTITY CASCADE;
+
 WITH new_products AS (
   INSERT INTO products (title, description)
   VALUES
@@ -42,9 +51,9 @@ WITH product_ids AS (
     (SELECT id FROM products WHERE title = 'Худи Oversize' ORDER BY id DESC LIMIT 1) AS hoodie_id
 )
 INSERT INTO discounts (product_id, discount, t_start, t_end)
-SELECT tshirt_id, 10, '2026-02-01', '2026-02-29' FROM product_ids
+SELECT tshirt_id, 10, DATE '2026-02-01', DATE '2026-02-28' FROM product_ids
 UNION ALL
-SELECT hoodie_id, 25, '2026-02-10', '2026-03-10' FROM product_ids;
+SELECT hoodie_id, 25, DATE '2026-02-10', DATE '2026-03-10' FROM product_ids;
 
 WITH product_ids AS (
   SELECT
