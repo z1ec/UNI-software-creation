@@ -9,9 +9,11 @@ class Settings(BaseSettings):
     DB_PORT: int
     DB_NAME: str
 
-    model_config = SettingsConfigDict(env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+    model_config = SettingsConfigDict(
+        env_file=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
+    )
 
     def get_db_url(self):
-        return f"postgresql+psycopg2://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return f"postgresql+psycopg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 settings = Settings()

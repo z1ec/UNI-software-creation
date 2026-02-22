@@ -1,14 +1,14 @@
 from sqlalchemy import Integer, String, Float, DateTime, Text, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, validates
 
-from app.database import Base
+from .database import Base
 
 class Product(Base):
     __tablename__ = "products"
     id: Mapped[int] = mapped_column(Integer, autoincrement=True)
     product_id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
-    description: Mapped[str] = mapped_column(Text, nullable=True)
+    description: Mapped[str] = mapped_column(String(2048), nullable=True)
     gender: Mapped[str] = mapped_column(String(1), nullable=False, default="U")
     reviews: Mapped[list["Review"]] = relationship(back_populates="product")
     product_variants: Mapped[list["ProductVariant"]] = relationship(back_populates="product")
@@ -20,7 +20,7 @@ class Review(Base):
     __tablename__ = "review"
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
     product_id: Mapped[int] = mapped_column(ForeignKey("products.product_id"))
-    review: Mapped[str] = mapped_column(Text(1024))
+    review: Mapped[str] = mapped_column(String(1024))
     estimate: Mapped[int] = mapped_column(Integer, nullable=False)
 
     @validates("estimate")

@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
-from backend.app.db import get_db
+from backend.app.database import connect_db as get_db
 from backend.app.models import Product
 
 

@@ -7,6 +7,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      DB_HOST: db
     ports:
       - "8000:8000"
     depends_on:
@@ -29,11 +31,9 @@ services:
     container_name: shop-database
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      LANG: "C.UTF-8"
-      LC_ALL: "C.UTF-8"
+      POSTGRES_DB: uni_db
+      POSTGRES_USER: uni_user
+      POSTGRES_PASSWORD: uni_password
     ports:
       - "5432:5432"
     volumes:
