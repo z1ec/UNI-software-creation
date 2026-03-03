@@ -1,3 +1,5 @@
+SET client_encoding = 'UTF8';
+
 BEGIN;
 
 TRUNCATE TABLE review, rating, product_variants, product_content, discounts, products RESTART IDENTITY CASCADE;
