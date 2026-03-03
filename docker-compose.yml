@@ -8,13 +8,10 @@ services:
     env_file:
       - .env
     environment:
-      DB_HOST: db
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
-
+       
   frontend:
     build:
       context: ./frontend
