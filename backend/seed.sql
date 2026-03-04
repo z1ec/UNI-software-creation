@@ -1,66 +1,43 @@
-TRUNCATE TABLE
-  review,
-  discounts,
-  rating,
-  product_variants,
-  product_content,
-  products
-RESTART IDENTITY CASCADE;
+SET client_encoding = 'UTF8';
 
-WITH new_products AS (
-  INSERT INTO products (title, description)
-  VALUES
-    ('Футболка Basic', 'Хлопок 100%, базовая футболка'),
-    ('Худи Oversize', 'Теплое худи свободного кроя')
-  RETURNING id, title
-),
-product_ids AS (
-  SELECT
-    MAX(CASE WHEN title = 'Футболка Basic' THEN id END) AS tshirt_id,
-    MAX(CASE WHEN title = 'Худи Oversize' THEN id END) AS hoodie_id
-  FROM new_products
-)
-INSERT INTO product_content (product_id, image, video)
-SELECT tshirt_id, 'https://example.com/images/tshirt.jpg', 'https://example.com/videos/tshirt.mp4' FROM product_ids
-UNION ALL
-SELECT hoodie_id, 'https://example.com/images/hoodie.jpg', 'https://example.com/videos/hoodie.mp4' FROM product_ids;
+BEGIN;
 
-WITH product_ids AS (
-  SELECT
-    (SELECT id FROM products WHERE title = 'Футболка Basic' ORDER BY id DESC LIMIT 1) AS tshirt_id,
-    (SELECT id FROM products WHERE title = 'Худи Oversize' ORDER BY id DESC LIMIT 1) AS hoodie_id
-)
-INSERT INTO product_variants (product_id, price, stock, s, m, l, xl, xxl)
-SELECT tshirt_id, 1499.0, 120, 10, 30, 40, 25, 15 FROM product_ids
-UNION ALL
-SELECT hoodie_id, 3999.0, 60, 5, 15, 20, 12, 8 FROM product_ids;
+TRUNCATE TABLE review, rating, product_variants, product_content, discounts, products RESTART IDENTITY CASCADE;
 
-WITH product_ids AS (
-  SELECT
-    (SELECT id FROM products WHERE title = 'Футболка Basic' ORDER BY id DESC LIMIT 1) AS tshirt_id,
-    (SELECT id FROM products WHERE title = 'Худи Oversize' ORDER BY id DESC LIMIT 1) AS hoodie_id
-)
+INSERT INTO products (id, product_id, title, description, gender)
+VALUES
+    (1, 1001, 'Худи Urban Wave', 'Теплое оверсайз-худи из хлопка с минималистичным принтом.', 'M'),
+    (2, 1002, 'Платье Summer Breeze', 'Легкое миди-платье из вискозы для повседневных прогулок.', 'F'),
+    (3, 1003, 'Футболка Basic Fit', 'Базовая футболка прямого кроя на каждый день.', 'U');
+
+INSERT INTO product_variants (product_id, price, stock, "S", "M", "L", "XL", "XXL")
+VALUES
+    (1001, 4590.00, 45, 8, 12, 11, 9, 5),
+    (1002, 5290.00, 38, 6, 10, 9, 8, 5),
+    (1003, 1990.00, 72, 15, 18, 16, 14, 9);
+
 INSERT INTO rating (product_id, rating_avg, rating_count)
-SELECT tshirt_id, 4.6, 18 FROM product_ids
-UNION ALL
-SELECT hoodie_id, 4.2, 9 FROM product_ids;
+VALUES
+    (1001, 4.7, 126),
+    (1002, 4.5, 94),
+    (1003, 4.3, 210);
 
-WITH product_ids AS (
-  SELECT
-    (SELECT id FROM products WHERE title = 'Футболка Basic' ORDER BY id DESC LIMIT 1) AS tshirt_id,
-    (SELECT id FROM products WHERE title = 'Худи Oversize' ORDER BY id DESC LIMIT 1) AS hoodie_id
-)
-INSERT INTO discounts (product_id, discount, t_start, t_end)
-SELECT tshirt_id, 10, DATE '2026-02-01', DATE '2026-02-28' FROM product_ids
-UNION ALL
-SELECT hoodie_id, 25, DATE '2026-02-10', DATE '2026-03-10' FROM product_ids;
-
-WITH product_ids AS (
-  SELECT
-    (SELECT id FROM products WHERE title = 'Футболка Basic' ORDER BY id DESC LIMIT 1) AS tshirt_id,
-    (SELECT id FROM products WHERE title = 'Худи Oversize' ORDER BY id DESC LIMIT 1) AS hoodie_id
-)
 INSERT INTO review (product_id, review, estimate)
-SELECT tshirt_id, 'Отличное качество ткани.', 5 FROM product_ids
-UNION ALL
-SELECT hoodie_id, 'Хороший крой, но маломерит.', 4 FROM product_ids;
+VALUES
+    (1001, 'Отличная посадка и плотная ткань, после стирки форма сохранилась.', 5),
+    (1002, 'Материал приятный, но на высокий рост хотелось бы длину чуть больше.', 4),
+    (1003, 'Хорошая базовая футболка, цвет не вымывается.', 5);
+
+INSERT INTO discounts (product_id, discount, t_start, t_end)
+VALUES
+    (1001, 15, '2026-03-01 00:00:00', '2026-03-10 23:59:59'),
+    (1002, 20, '2026-03-05 00:00:00', '2026-03-15 23:59:59'),
+    (1003, 10, '2026-03-02 00:00:00', '2026-03-20 23:59:59');
+
+INSERT INTO product_content (product_id, image, video)
+VALUES
+    (1001, 'https://cdn.example.com/products/1001/main.jpg', 'https://cdn.example.com/products/1001/preview.mp4'),
+    (1002, 'https://cdn.example.com/products/1002/main.jpg', 'https://cdn.example.com/products/1002/preview.mp4'),
+    (1003, 'https://cdn.example.com/products/1003/main.jpg', 'https://cdn.example.com/products/1003/preview.mp4');
+
+COMMIT;

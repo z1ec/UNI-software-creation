@@ -1,13 +1,23 @@
 from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.encoders import jsonable_encoder
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
-from backend.app.db import get_db
+from backend.app.database import connect_db as get_db
 from backend.app.models import Product
 
 
 app = FastAPI()
+
+# Временная затычка, которая принудительно к каждому запросу приписывает UTF-8,
+# Нужно разобраться как это правильно делать через Pydantic - response_model
+#
+@app.middleware("http")
+async def force_json_utf8(request, call_next):
+    response = await call_next(request)
+    content_type = response.headers.get("content-type", "")
+    if content_type.startswith("application/json"):
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
 
 # вывод всех товаров
 @app.get("/products")
