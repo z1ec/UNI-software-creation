@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  font-family: "Inter", "Segoe UI", sans-serif;
+@theme {
+  --color-ivory: #E5E5E0;
+  --color-eerie: #000000ff;
+  --color-gold: #CFA355;
+  --color-dark-olive: #4E5B3C;
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: Inter, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-ivory text-eerie font-sans;
+    margin: 0;
+    min-width: 320px;
+  }
 }
