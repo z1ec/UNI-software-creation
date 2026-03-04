@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import './App.css'
 
 type HelloResponse = {
   message: string
@@ -22,11 +21,13 @@ function App() {
   }, [])
 
   return (
-    <main>
-      <h1>Frontend in Docker</h1>
-      {error && <p>Ошибка: {error}</p>}
-      {!error && !data && <p>Загрузка...</p>}
-      {data && <p>Ответ backend: {data.message}</p>}
+    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-6">
+      <section className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+        <h1 className="mb-4 text-3xl font-bold text-slate-900">Frontend in Docker</h1>
+        {error && <p className="text-red-600">Ошибка: {error}</p>}
+        {!error && !data && <p className="text-slate-600">Загрузка...</p>}
+        {data && <p className="text-slate-700">Ответ backend: {data.message}</p>}
+      </section>
     </main>
   )
 }
