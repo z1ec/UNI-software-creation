@@ -1,16 +1,16 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-function HomePage() {
+function Catalog() {
     return (
         <>
         <Header />
         <main>
-        <h1 className="min-h-[2000px]">main page</h1>
+        <h1 className="min-h-[2000px]">catalog page</h1>
         </main>
         <Footer />
         </>
     )
 }
 
-export default HomePage
+export default Catalog

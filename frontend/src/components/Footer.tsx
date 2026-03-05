@@ -1,7 +1,7 @@
 function Footer() {
     return(
-        <footer>
-            <h3>0987654321</h3>
+        <footer className="bg-eerie h-20">
+            <h3 className="text-white">footer</h3>
         </footer>
     )
 }
