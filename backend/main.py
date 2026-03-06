@@ -38,13 +38,18 @@ def show_all_products(db: Session=Depends(get_db)):
         for p in request
     ]
     
-
-# вывод товаров по ID
+# вывод товара по id
 @app.get("/products/{productID}")
 def show_product(productID: int, db: Session = Depends(get_db)):
-    product = db.query(Product).filter(Product.id == productID).first()
+    product = db.execute(select(Product).where(Product.id == productID)).scalar_one_or_none()
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Product with id {productID} not found"
+        )
+    
     # Преобразование в JSON-подобный формат
-    return { 
+    return {
         "id": product.id,
         "title": product.title,
         "description": product.description
