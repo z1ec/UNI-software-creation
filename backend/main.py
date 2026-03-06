@@ -33,7 +33,7 @@ def getProductContentObject(product_id: int, db: Session):
 
 
 # получает ОБЪЕКТ скидки на товар
-def getDicsountObject(product_id: int, db: Session):
+def getDiscountObject(product_id: int, db: Session):
     discount = db.execute(select(Discount).where(Discount.product_id == product_id)).scalar_one_or_none()
     return discount
 
