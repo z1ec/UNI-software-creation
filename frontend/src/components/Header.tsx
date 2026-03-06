@@ -155,34 +155,60 @@ function Header() {
                             Atelier
                         </Link>
 
-                        {CENTER_MENU_ITEMS.map((item) => (
-                            <Link
-                                key={`compact-${item.label}`}
-                                to={item.to}
-                                className={`relative whitespace-nowrap text-sm tracking-wide text-eerie/70 transition-all duration-300 hover:text-eerie after:absolute after:right-0 after:-bottom-1 after:left-0 after:h-px after:origin-left after:scale-x-0 after:bg-eerie after:transition-transform after:duration-300 hover:after:scale-x-100 ${
-                                    isCompactExpanded
-                                        ? "translate-y-0 opacity-100"
-                                        : "pointer-events-none -translate-y-1 opacity-0"
-                                }`}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
+                        <span
+                            className={`text-eerie/30 transition-all duration-300 ${
+                                isCompactExpanded
+                                    ? "translate-y-0 opacity-100"
+                                    : "pointer-events-none -translate-y-1 opacity-0"
+                            }`}
+                            aria-hidden="true"
+                        >
+                            |
+                        </span>
 
-                        {NAV_ITEMS.map((item) => (
-                            <Link
-                                key={`compact-icon-${item.key}`}
-                                to={item.to}
-                                aria-label={item.label}
-                                className={`rounded-md p-1 transition-colors hover:bg-eerie/15 ${
-                                    isCompactExpanded
-                                        ? "translate-y-0 opacity-100"
-                                        : "pointer-events-none -translate-y-1 opacity-0"
-                                }`}
-                            >
-                                <img src={item.icon} alt="" aria-hidden="true" className="h-5 w-5" />
-                            </Link>
-                        ))}
+                        <div className="flex items-center gap-4">
+                            {CENTER_MENU_ITEMS.map((item) => (
+                                <Link
+                                    key={`compact-${item.label}`}
+                                    to={item.to}
+                                    className={`relative whitespace-nowrap text-sm tracking-wide text-eerie/70 transition-all duration-300 hover:text-eerie after:absolute after:right-0 after:-bottom-1 after:left-0 after:h-px after:origin-left after:scale-x-0 after:bg-eerie after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+                                        isCompactExpanded
+                                            ? "translate-y-0 opacity-100"
+                                            : "pointer-events-none -translate-y-1 opacity-0"
+                                    }`}
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
+                        </div>
+
+                        <span
+                            className={`text-eerie/30 transition-all duration-300 ${
+                                isCompactExpanded
+                                    ? "translate-y-0 opacity-100"
+                                    : "pointer-events-none -translate-y-1 opacity-0"
+                            }`}
+                            aria-hidden="true"
+                        >
+                            |
+                        </span>
+
+                        <div className="flex items-center gap-1">
+                            {NAV_ITEMS.map((item) => (
+                                <Link
+                                    key={`compact-icon-${item.key}`}
+                                    to={item.to}
+                                    aria-label={item.label}
+                                    className={`rounded-md p-1 transition-colors hover:bg-eerie/15 ${
+                                        isCompactExpanded
+                                            ? "translate-y-0 opacity-100"
+                                            : "pointer-events-none -translate-y-1 opacity-0"
+                                    }`}
+                                >
+                                    <img src={item.icon} alt="" aria-hidden="true" className="h-5 w-5" />
+                                </Link>
+                            ))}
+                        </div>
                     </nav>
                 </div>
             )}
