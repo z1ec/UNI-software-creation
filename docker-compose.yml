@@ -28,9 +28,9 @@ services:
     container_name: shop-database
     restart: unless-stopped
     environment:
-      POSTGRES_DB: uni_db
-      POSTGRES_USER: uni_user
-      POSTGRES_PASSWORD: uni_password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
