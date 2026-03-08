@@ -23,7 +23,6 @@ from backend.app.services.product_service import (
     get_product_stock,
 )
 
-# загружает данные из бд для ендпоинта api/products
 def get_products_payload(db: Session) -> List[ProductListItemSchema]:
     products = list_products_with_preview(db)
 
@@ -51,7 +50,6 @@ def get_products_payload(db: Session) -> List[ProductListItemSchema]:
 
     return items
 
-# загружает данные из бд для ендпоинта api/products/id
 def get_product_payload(product_id: int, db: Session) -> Optional[ProductDetailSchema]:
     product = get_product_with_details(product_id, db)
 

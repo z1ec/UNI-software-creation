@@ -13,13 +13,13 @@ from backend.app.schemas.product import ProductRatingSchema
 
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
 
-
+# переделать через ормальный часовой пояс
 def as_moscow_aware(value: datetime) -> datetime:
     if value.tzinfo is None:
         return value.replace(tzinfo=MOSCOW_TZ)
     return value.astimezone(MOSCOW_TZ)
 
-
+# возвращает самую большую и актуальную скидку на товар
 def active_discount_value(product: Product) -> Optional[int]:
     now_moscow = datetime.now(MOSCOW_TZ)
     active_discounts = [
