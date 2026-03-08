@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from backend.app.database import connect_db as get_db
-from backend.app.schemas import ProductDetailSchema, ProductListItemSchema
+from backend.app.db.session import connect_db as get_db
+from backend.app.schemas.product import ProductDetailSchema, ProductListItemSchema
 from backend.app.services.products_read_service import (
     get_product_payload,
     get_products_payload,

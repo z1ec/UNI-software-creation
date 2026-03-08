@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String, Float, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
-from .database import Base
+from backend.app.db.session import Base
 
 class Product(Base):
     __tablename__ = "products"

@@ -1,11 +1,13 @@
 from datetime import datetime
 from typing import List, Optional
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.orm import Session
 
-from backend.app.models import Product
-from backend.app.schemas import (
+from backend.app.repositories.product_repository import (
+    get_product_with_details,
+    list_products_with_preview,
+)
+from backend.app.schemas.product import (
     DiscountPublicSchema,
     ProductContentPublicSchema,
     ProductDetailSchema,
@@ -23,13 +25,7 @@ from backend.app.services.product_service import (
 
 # загружает данные из бд для ендпоинта api/products
 def get_products_payload(db: Session) -> List[ProductListItemSchema]:
-    products = db.execute(
-        select(Product).options(
-            selectinload(Product.product_variants),
-            selectinload(Product.discounts),
-            selectinload(Product.product_content),
-        )
-    ).scalars().all()
+    products = list_products_with_preview(db)
 
     items: List[ProductListItemSchema] = []
     for product in products:
@@ -57,16 +53,7 @@ def get_products_payload(db: Session) -> List[ProductListItemSchema]:
 
 # загружает данные из бд для ендпоинта api/products/id
 def get_product_payload(product_id: int, db: Session) -> Optional[ProductDetailSchema]:
-    product = db.execute(
-        select(Product)
-        .options(
-            selectinload(Product.reviews),
-            selectinload(Product.product_variants),
-            selectinload(Product.discounts),
-            selectinload(Product.product_content),
-        )
-        .where(Product.id == product_id)
-    ).scalar_one_or_none()
+    product = get_product_with_details(product_id, db)
 
     if product is None:
         return None
