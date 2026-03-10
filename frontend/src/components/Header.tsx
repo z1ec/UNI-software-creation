@@ -141,7 +141,7 @@ function Header() {
                 }`}
             >
                 <nav
-                    className={`inline-flex items-center justify-center overflow-hidden rounded-full border border-eerie/10 bg-white/95 shadow-sm backdrop-blur-sm transition-all duration-500 ${
+                    className={`inline-flex items-center justify-center overflow-hidden rounded-full border border-eerie/10 bg-white/75 shadow-sm backdrop-blur-sm transition-all duration-500 ${
                         isCompactExpanded
                             ? isDesktopMenu
                                 ? isMidDesktop
