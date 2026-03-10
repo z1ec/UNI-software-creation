@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker, Session
-from .config import settings
+from backend.app.core.config import settings
 
 DB_URL = settings.get_db_url()
 

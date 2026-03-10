@@ -9,8 +9,8 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 # Импортируем из app
-from app.config import settings
-from app.database import Base
+from backend.app.core.config import settings
+from app.db.session import Base
 from app.models import *
 
 config = context.config
