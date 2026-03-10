@@ -10,11 +10,11 @@ type ProductCardProps = {
 };
 
 function Product_card({
-    imageUrl = "https://img.brandshop.ru/cache/products/g/gx1000fa25ts7-0_1104x1104.webp",
-    title = "GX1000",
-    category = "Мужская футболка",
-    brand = "Terror",
-    price = 5290,
+    imageUrl = "/product.png",
+    title = "Без названия",
+    category = "Категория",
+    brand = "Бренд",
+    price = 0,
     currency = "₽",
     onFavoriteClick,
     onQuickViewClick,

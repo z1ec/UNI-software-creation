@@ -32,9 +32,9 @@ const CENTER_MENU_ITEMS: MenuItem[] = [
 
 function Header() {
     const [viewportWidth, setViewportWidth] = useState(0);
-    const [isCompactHeader, setIsCompactHeader] = useState(false);
     const [showCompactMenu, setShowCompactMenu] = useState(false);
     const [isCompactExpanded, setIsCompactExpanded] = useState(false);
+    const isCompactHeaderRef = useRef(false);
     const compactTimerRef = useRef<number | null>(null);
 
     const isDesktopMenu = viewportWidth >= 800;
@@ -46,9 +46,39 @@ function Header() {
     };
 
     useEffect(() => {
+        const clearCompactTimer = () => {
+            if (compactTimerRef.current) {
+                window.clearTimeout(compactTimerRef.current);
+                compactTimerRef.current = null;
+            }
+        };
+
+        const applyCompactState = (nextCompact: boolean) => {
+            clearCompactTimer();
+
+            if (nextCompact) {
+                setShowCompactMenu(true);
+                setIsCompactExpanded(false);
+                compactTimerRef.current = window.setTimeout(() => {
+                    setIsCompactExpanded(true);
+                }, 120);
+                return;
+            }
+
+            setIsCompactExpanded(false);
+            compactTimerRef.current = window.setTimeout(() => {
+                setShowCompactMenu(false);
+            }, 220);
+        };
+
         const updateLayoutState = () => {
             setViewportWidth(window.innerWidth);
-            setIsCompactHeader(window.scrollY > 70);
+
+            const nextCompact = window.scrollY > 70;
+            if (isCompactHeaderRef.current !== nextCompact) {
+                isCompactHeaderRef.current = nextCompact;
+                applyCompactState(nextCompact);
+            }
         };
 
         updateLayoutState();
@@ -58,35 +88,7 @@ function Header() {
         return () => {
             window.removeEventListener("resize", updateLayoutState);
             window.removeEventListener("scroll", updateLayoutState);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (compactTimerRef.current) {
-            window.clearTimeout(compactTimerRef.current);
-            compactTimerRef.current = null;
-        }
-
-        if (isCompactHeader) {
-            setShowCompactMenu(true);
-            setIsCompactExpanded(false);
-            compactTimerRef.current = window.setTimeout(() => {
-                setIsCompactExpanded(true);
-            }, 120);
-            return;
-        }
-
-        setIsCompactExpanded(false);
-        compactTimerRef.current = window.setTimeout(() => {
-            setShowCompactMenu(false);
-        }, 220);
-    }, [isCompactHeader]);
-
-    useEffect(() => {
-        return () => {
-            if (compactTimerRef.current) {
-                window.clearTimeout(compactTimerRef.current);
-            }
+            clearCompactTimer();
         };
     }, []);
 
