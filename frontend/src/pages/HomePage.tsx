@@ -1,76 +1,49 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Product_card from "../components/ui/Product_card";
-import { fetchProducts } from "../api/products";
-import type { ProductListItem } from "../types/product";
 
-const FALLBACK_IMAGE = "/product.png";
-const CURRENCY = "₽";
+const HERO_CARDS = [
+    {
+        id: "men",
+        label: "Мужское",
+        image: "/hero_section_man.png",
+        to: "/catalog",
+    },
+    {
+        id: "women",
+        label: "Женское",
+        image: "/hero_section_woman.png",
+        to: "/catalog",
+    },
+] as const;
 
 function HomePage() {
-    const [products, setProducts] = useState<ProductListItem[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        const loadProducts = async () => {
-            try {
-                setIsLoading(true);
-                setError(null);
-                const items = await fetchProducts(controller.signal);
-                setProducts(items);
-            } catch (loadError) {
-                if (loadError instanceof DOMException && loadError.name === "AbortError") {
-                    return;
-                }
-
-                setError("Не удалось загрузить товары. Попробуйте обновить страницу.");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        void loadProducts();
-
-        return () => {
-            controller.abort();
-        };
-    }, []);
-
     return (
         <>
             <Header />
-            <main className="mx-auto min-h-[calc(100vh-160px)] w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-                {isLoading && (
-                    <p className="text-center text-lg text-[#5f5f5f]">Загружаем товары...</p>
-                )}
-
-                {!isLoading && error && (
-                    <p className="text-center text-lg text-red-600">{error}</p>
-                )}
-
-                {!isLoading && !error && products.length === 0 && (
-                    <p className="text-center text-lg text-[#5f5f5f]">Товары пока отсутствуют.</p>
-                )}
-
-                {!isLoading && !error && products.length > 0 && (
-                    <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {products.map((product) => (
-                            <Product_card
-                                key={product.id}
-                                imageUrl={product.image ?? FALLBACK_IMAGE}
-                                title={product.title}
-                                category={product.type}
-                                brand={product.brand}
-                                price={product.price}
-                                currency={CURRENCY}
-                            />
+            <main className="bg-[#e9e9e9] py-8 sm:py-12">
+                <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                        {HERO_CARDS.map((card) => (
+                            <Link
+                                key={card.id}
+                                to={card.to}
+                                className="group block overflow-hidden rounded-sm p-3 transition-transform duration-200 hover:-translate-y-0.5"
+                            >
+                                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                                    <img
+                                        src={card.image}
+                                        alt={card.label}
+                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04] rounded-md"
+                                    />
+                                    <div className="absolute right-4 bottom-4 left-4 rounded-md bg-[#f2f2f2]/75 py-3 text-center text-[22px] leading-none text-black sm:text-[32px]">
+                                        {card.label}
+                                    </div>
+                                </div>
+                            </Link>
                         ))}
-                    </section>
-                )}
+                    </div>
+                </section>
             </main>
             <Footer />
         </>
