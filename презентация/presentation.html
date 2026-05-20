@@ -1303,7 +1303,7 @@
 
 
   <!-- ============================ SLIDE 6 — ДЕМО ============================ -->
-  <section data-screen-label="06 Демонстрация">
+  <section data-screen-label="06 Демонстрация" style="padding:0 120px 48px; overflow:hidden;">
     <div class="watermark">ATELIER<span class="yr">·25</span></div>
     <div class="topmeta">
       <span>Докладчики</span>
@@ -1311,56 +1311,99 @@
       <span class="speaker">Фомин Владимир · Рахманинов Савва</span>
     </div>
 
-    <div class="slide-head">
+    <!-- Компактный заголовок -->
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:76px; margin-bottom:14px;">
       <div>
         <div class="eyebrow">06 / 07 — Скриншоты</div>
-        <h1 class="slide-title">Демонстрация системы</h1>
+        <h1 style="font-size:50px; font-weight:700; line-height:1; letter-spacing:0.04em; text-transform:uppercase; margin:0;">Демонстрация системы</h1>
       </div>
       <div class="slide-num-tag">5 FRONTEND + 2 BACKEND</div>
     </div>
 
-    <div style="flex:1; display:flex; flex-direction:column; gap:24px;">
-      <div class="demo-section-label">Frontend · клиентская часть</div>
-      <div class="demo-row fe">
-        <div class="demo-card">
-          <div class="demo-img">[ home.png ]</div>
-          <div class="demo-meta"><span class="demo-label">Главная страница</span><span class="demo-num">FE-01</span></div>
+    <!-- Frontend label -->
+    <div class="demo-section-label" style="margin-bottom:8px;">Frontend · клиентская часть</div>
+
+    <!-- Ряд 1: 3 карточки -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px;">
+
+      <div class="demo-card">
+        <div style="height:270px; overflow:hidden; border-radius:14px 14px 0 0; background:var(--bg-2);">
+          <img src="главная страница.png" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
         </div>
-        <div class="demo-card">
-          <div class="demo-img">[ catalog.png ]</div>
-          <div class="demo-meta"><span class="demo-label">Каталог с фильтрами</span><span class="demo-num">FE-02</span></div>
-        </div>
-        <div class="demo-card">
-          <div class="demo-img">[ product.png ]</div>
-          <div class="demo-meta"><span class="demo-label">Карточка товара</span><span class="demo-num">FE-03</span></div>
-        </div>
-        <div class="demo-card">
-          <div class="demo-img">[ cart.png ]</div>
-          <div class="demo-meta"><span class="demo-label">Корзина</span><span class="demo-num">FE-04</span></div>
-        </div>
-        <div class="demo-card">
-          <div class="demo-img">[ account.png ]</div>
-          <div class="demo-meta"><span class="demo-label">Личный кабинет</span><span class="demo-num">FE-05</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;">
+          <span class="demo-label">Главная страница</span><span class="demo-num">FE-01</span>
         </div>
       </div>
 
-      <div class="demo-section-label">Backend · серверная часть</div>
-      <div class="demo-row be" style="grid-template-columns: 1fr 1fr;">
-        <div class="demo-card" style="display:grid; grid-template-columns: 1.4fr 1fr; align-items:stretch;">
-          <div class="demo-img dark" style="aspect-ratio:auto; min-height: 140px;">[ swagger-ui.png ]</div>
-          <div class="demo-meta" style="flex-direction:column; align-items:flex-start; justify-content:center; padding: 22px 24px; gap: 8px;">
-            <span class="demo-num">BE-01</span>
-            <span class="demo-label" style="font-size:18px;">Swagger UI<br/>документация API</span>
-          </div>
+      <div class="demo-card">
+        <div style="height:270px; overflow:hidden; border-radius:14px 14px 0 0; background:var(--bg-2);">
+          <img src="каталог с товарами.png" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
         </div>
-        <div class="demo-card" style="display:grid; grid-template-columns: 1.4fr 1fr; align-items:stretch;">
-          <div class="demo-img dark" style="aspect-ratio:auto; min-height: 140px;">[ docker-logs.png ]</div>
-          <div class="demo-meta" style="flex-direction:column; align-items:flex-start; justify-content:center; padding: 22px 24px; gap: 8px;">
-            <span class="demo-num">BE-02</span>
-            <span class="demo-label" style="font-size:18px;">Логи<br/>Docker</span>
-          </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;">
+          <span class="demo-label">Каталог с фильтрами</span><span class="demo-num">FE-02</span>
         </div>
       </div>
+
+      <div class="demo-card">
+        <div style="height:270px; overflow:hidden; border-radius:14px 14px 0 0; background:var(--bg-2);">
+          <img src="карточка товара.png" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;">
+          <span class="demo-label">Карточка товара</span><span class="demo-num">FE-03</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Ряд 2: 2 карточки -->
+    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:14px;">
+
+      <div class="demo-card">
+        <div style="height:270px; overflow:hidden; border-radius:14px 14px 0 0; background:var(--bg-2);">
+          <img src="корзина.png" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;">
+          <span class="demo-label">Корзина</span><span class="demo-num">FE-04</span>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div style="height:270px; overflow:hidden; border-radius:14px 14px 0 0; background:var(--bg-2);">
+          <img src="админ панель.png" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" />
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;">
+          <span class="demo-label">Админ панель</span><span class="demo-num">FE-05</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Backend label -->
+    <div class="demo-section-label" style="margin-bottom:8px;">Backend · серверная часть</div>
+
+    <!-- Backend: 2 горизонтальные карточки -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+
+      <div class="demo-card" style="display:flex; flex-direction:row; overflow:hidden; height:100px;">
+        <div style="width:200px; flex-shrink:0; overflow:hidden; background:#111;">
+          <img src="api documentation.png" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;" />
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:center;padding:14px 22px;gap:4px;border-left:1px solid var(--line);">
+          <span class="demo-num">BE-01</span>
+          <span class="demo-label" style="font-size:16px;line-height:1.3;">Swagger UI — документация API</span>
+        </div>
+      </div>
+
+      <div class="demo-card" style="display:flex; flex-direction:row; overflow:hidden; height:100px;">
+        <div style="width:200px; flex-shrink:0; overflow:hidden; background:#111;">
+          <img src="docker logs.png" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;" />
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:center;padding:14px 22px;gap:4px;border-left:1px solid var(--line);">
+          <span class="demo-num">BE-02</span>
+          <span class="demo-label" style="font-size:16px;line-height:1.3;">Логи Docker в реальном времени</span>
+        </div>
+      </div>
+
     </div>
 
     <div class="pagenum">— 06 / 07 —</div>
