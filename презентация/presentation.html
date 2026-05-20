@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>ATELIER — Презентация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --bg: #F7F3EE;
+    --bg-2: #EFEAE1;
+    --ink: #1A1A1A;
+    --muted: #6B6B6B;
+    --line: #1A1A1A14;
+    --line-strong: #1A1A1A26;
+    --card: #FFFDF9;
+    --accent: #1A1A1A;
+    --highlight: #E9E1D2;
+  }
+
+  * { box-sizing: border-box; }
+
+  deck-stage {
+    background: #000;
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: var(--ink);
+  }
+
+  section {
+    width: 1920px;
+    height: 1080px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    padding: 88px 120px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Watermark logo */
+  .watermark {
+    position: absolute;
+    top: 56px;
+    left: 120px;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .watermark::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--ink);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .watermark .yr {
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    margin-left: 4px;
+  }
+
+  /* Top-right meta */
+  .topmeta {
+    position: absolute;
+    top: 56px;
+    right: 120px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .topmeta .speaker {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .topmeta .dot {
+    width: 4px; height: 4px; border-radius: 50%; background: var(--muted);
+  }
+
+  /* Slide header */
+  .slide-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 56px;
+    margin-bottom: 56px;
+  }
+  .slide-num-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  h1.slide-title {
+    font-size: 88px;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  /* Page number footer */
+  .pagenum {
+    position: absolute;
+    bottom: 48px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.24em;
+  }
+
+  /* Generic card */
+  .card {
+    background: var(--card);
+    border-radius: 28px;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.04), 0 18px 40px -28px rgba(26,26,26,0.18);
+    border: 1px solid var(--line);
+    padding: 36px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--line-strong);
+    width: 100%;
+  }
+
+  /* ============ SLIDE 1 — TITLE ============ */
+  .s1 {
+    align-items: center;
+    justify-content: center;
+    padding-top: 88px;
+  }
+  .s1-discipline {
+    position: absolute;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .s1-center {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 80px;
+  }
+  .s1-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    margin-bottom: 36px;
+  }
+  .s1-logo {
+    font-size: 280px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 0.9;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+  }
+  .s1-logo::after {
+    content: "®";
+    font-size: 32px;
+    vertical-align: super;
+    margin-left: 8px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .s1-sub {
+    font-size: 34px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-top: 28px;
+    letter-spacing: 0.04em;
+  }
+  .s1-disc {
+    font-size: 18px;
+    color: var(--muted);
+    margin-top: 16px;
+    letter-spacing: 0.08em;
+  }
+  .team-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1500px;
+  }
+  .team-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 28px 28px 26px;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.04), 0 18px 40px -28px rgba(26,26,26,0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .team-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .team-name {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .team-role {
+    font-size: 15px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+  }
+  .team-no {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    margin-bottom: -6px;
+  }
+
+  /* ============ SLIDE 2 — ACTUALITY ============ */
+  .cards-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    flex: 1;
+  }
+  .a-card {
+    background: var(--card);
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    padding: 44px 40px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.04), 0 18px 40px -28px rgba(26,26,26,0.18);
+    position: relative;
+  }
+  .a-card.dark {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .a-card.dark .a-label,
+  .a-card.dark .a-num {
+    color: rgba(247,243,238,0.55);
+  }
+  .a-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    margin-bottom: 28px;
+  }
+  .a-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    background: var(--bg-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .a-card.dark .a-icon {
+    background: rgba(247,243,238,0.08);
+  }
+  .a-card.dark .a-icon svg { stroke: var(--bg); }
+  .a-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--ink);
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .a-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .a-title {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 22px;
+  }
+  .a-body {
+    font-size: 17px;
+    line-height: 1.55;
+    color: inherit;
+    opacity: 0.85;
+  }
+  .a-card.dark .a-body { color: rgba(247,243,238,0.78); opacity: 1; }
+  .a-stat {
+    margin-top: auto;
+    padding-top: 28px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .a-stat .num {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .a-stat .unit {
+    font-size: 14px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+  .a-card.dark .a-stat .unit { color: rgba(247,243,238,0.55); }
+
+  /* ============ SLIDE 3 — ANALYSIS TABLE ============ */
+  .compare-table {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.15fr;
+    grid-auto-rows: minmax(0, 1fr);
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--card);
+    box-shadow: 0 1px 0 rgba(26,26,26,0.04), 0 18px 40px -28px rgba(26,26,26,0.18);
+  }
+  .ct-cell {
+    padding: 28px 32px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--ink);
+    background: var(--card);
+  }
+  .ct-cell:nth-child(4n) { border-right: none; }
+  .compare-table > .ct-cell:nth-last-child(-n+4) { border-bottom: none; }
+
+  .ct-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    background: var(--bg-2);
+    align-items: flex-end;
+    padding-top: 32px;
+    padding-bottom: 24px;
+    line-height: 1.4;
+  }
+  .ct-head strong {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    text-transform: none;
+  }
+  .ct-rowlabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--bg-2);
+  }
+  /* Atelier column highlight */
+  .ct-cell.atelier {
+    background: var(--ink);
+    color: var(--bg);
+    font-weight: 500;
+  }
+  .ct-cell.atelier.head {
+    background: var(--ink);
+    color: rgba(247,243,238,0.6);
+  }
+  .ct-cell.atelier.head strong {
+    color: var(--bg);
+  }
+  .ct-cell.atelier .check {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ct-cell.atelier .check::before {
+    content: "";
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--ink);
+    display: inline-block;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A1A1A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* ============ SLIDE 4 — TECH STACK ============ */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    flex: 1;
+  }
+  .stack-card {
+    background: var(--card);
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    padding: 44px 40px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.04), 0 18px 40px -28px rgba(26,26,26,0.18);
+  }
+  .stack-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .stack-title {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .stack-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    background: var(--bg-2);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .stack-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .stack-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 18px;
+  }
+  .stack-bullet {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--bg-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .stack-name {
+    font-weight: 500;
+  }
+  .stack-meta {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    margin-left: auto;
+  }
+  .stack-footer {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ============ SLIDE 5 — ARCHITECTURE ============ */
+  .arch-wrap {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 2.1fr 1fr;
+    gap: 28px;
+  }
+  .arch-main {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: 44px 44px 40px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.04), 0 18px 40px -28px rgba(26,26,26,0.18);
+  }
+  .arch-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(7, auto);
+    align-items: center;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+  .flow-node {
+    background: var(--bg-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    padding: 16px 18px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .flow-node.dark {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .flow-node .nname {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .flow-node .nport {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+  .flow-node.dark .nport { color: rgba(247,243,238,0.6); }
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    padding: 0 14px;
+  }
+  .arrow svg { width: 28px; height: 14px; }
+
+  .fork {
+    background: var(--bg-2);
+    border-radius: 16px;
+    padding: 22px 26px;
+    margin-bottom: 32px;
+  }
+  .fork-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .fork-rows {
+    display: grid;
+    grid-template-columns: 110px 30px 1fr;
+    gap: 10px 16px;
+    align-items: center;
+    font-size: 16px;
+  }
+  .fork-rows .path {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+  .fork-rows .arr {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .layers-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .layers {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .layer {
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+  }
+  .layer .lnum {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .layer.final {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .layer.final .lnum { color: rgba(247,243,238,0.6); }
+
+  .arch-side {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 28px;
+    padding: 44px 36px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 18px 40px -28px rgba(26,26,26,0.4);
+  }
+  .arch-side .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: rgba(247,243,238,0.55);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .arch-side h3 {
+    font-size: 38px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px 0;
+  }
+  .token {
+    border-top: 1px solid rgba(247,243,238,0.18);
+    padding: 22px 0;
+  }
+  .token:last-of-type { padding-bottom: 0; }
+  .token .tname {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(247,243,238,0.6);
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .token .ttime {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .token .tdesc {
+    font-size: 14px;
+    color: rgba(247,243,238,0.7);
+    margin-top: 4px;
+  }
+  .arch-side .rotate-note {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(247,243,238,0.18);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(247,243,238,0.6);
+    letter-spacing: 0.08em;
+  }
+
+  /* ============ SLIDE 6 — DEMO ============ */
+  .demo-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .demo-section-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line-strong);
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto auto;
+    gap: 22px;
+    flex: 1;
+  }
+  .demo-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.04), 0 18px 40px -28px rgba(26,26,26,0.18);
+    display: flex;
+    flex-direction: column;
+  }
+  .demo-img {
+    aspect-ratio: 16 / 9;
+    background: repeating-linear-gradient(135deg, #EFEAE1 0 12px, #E7E1D4 12px 24px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+  }
+  .demo-img.dark {
+    background: repeating-linear-gradient(135deg, #1f1f1f 0 12px, #161616 12px 24px);
+    color: rgba(247,243,238,0.5);
+  }
+  .demo-meta {
+    padding: 14px 18px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .demo-label {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .demo-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .demo-frontend { grid-column: 1 / span 5; }
+  .demo-backend { grid-column: 1 / span 5; }
+
+  /* split rows */
+  .demo-row {
+    display: grid;
+    gap: 22px;
+    margin-bottom: 28px;
+  }
+  .demo-row.fe { grid-template-columns: repeat(5, 1fr); }
+  .demo-row.be { grid-template-columns: repeat(2, 1fr); }
+  .demo-row.be .demo-card { max-width: 720px; }
+
+  /* ============ SLIDE 7 — FUTURE ============ */
+  .future-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    flex: 1;
+  }
+  .future-col {
+    display: flex;
+    flex-direction: column;
+  }
+  .future-col-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .future-col-title {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .future-col-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+  }
+  .future-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .future-item {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 1px 0 rgba(26,26,26,0.03), 0 10px 26px -22px rgba(26,26,26,0.18);
+  }
+  .fi-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .fi-text {
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .fi-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--bg-2);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .future-item.dark {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .future-item.dark .fi-num { color: rgba(247,243,238,0.5); }
+  .future-item.dark .fi-tag { background: rgba(247,243,238,0.1); color: rgba(247,243,238,0.7); }
+
+  /* Decorative corner mark */
+  .corner-mark {
+    position: absolute;
+    bottom: 48px;
+    right: 120px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+  }
+  .pagenum { left: 50%; right: auto; transform: translateX(-50%); width: auto; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ============================ SLIDE 1 — TITLE ============================ -->
+  <section class="s1" data-screen-label="01 Title">
+    <div class="s1-discipline">FRONTEND × BACKEND · STUDIO PROJECT · 2026</div>
+
+    <div class="s1-center">
+      <div class="s1-mark">— A FASHION COMMERCE PLATFORM —</div>
+      <h1 class="s1-logo">ATELIER</h1>
+      <div class="s1-sub">Интернет-магазин одежды</div>
+      <div class="s1-disc">Дисциплина: Фронтенд и бэкенд разработка</div>
+    </div>
+
+    <div class="team-row">
+      <div class="team-card">
+        <div class="team-no">01 / TEAM-LEAD</div>
+        <div class="team-avatar">ФВ</div>
+        <div>
+          <div class="team-name">Фомин<br />Владимир</div>
+          <div class="team-role">team-lead · frontend</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-no">02 / BACKEND</div>
+        <div class="team-avatar">РС</div>
+        <div>
+          <div class="team-name">Рахманинов<br />Савва</div>
+          <div class="team-role">backend developer</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-no">03 / ANALYSIS</div>
+        <div class="team-avatar">ДМ</div>
+        <div>
+          <div class="team-name">Демидов<br />Максим</div>
+          <div class="team-role">бизнес-аналитик</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-no">04 / QA</div>
+        <div class="team-avatar">КГ</div>
+        <div>
+          <div class="team-name">Круцяк<br />Глеб</div>
+          <div class="team-role">qa engineer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagenum">01 — 07</div>
+  </section>
+
+
+  <!-- ============================ SLIDE 2 — АКТУАЛЬНОСТЬ ============================ -->
+  <section data-screen-label="02 Актуальность">
+    <div class="watermark">ATELIER<span class="yr">·25</span></div>
+    <div class="topmeta">
+      <span>Докладчик</span>
+      <span class="dot"></span>
+      <span class="speaker">Фомин Владимир</span>
+    </div>
+
+    <div class="slide-head">
+      <div>
+        <div class="eyebrow">02 / 07 — Контекст</div>
+        <h1 class="slide-title">Актуальность</h1>
+      </div>
+      <div class="slide-num-tag">FY 2025 → 2026</div>
+    </div>
+
+    <div class="cards-3">
+      <div class="a-card">
+        <div class="a-num">01</div>
+        <div class="a-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg>
+        </div>
+        <div class="a-label">Рост рынка</div>
+        <div class="a-title">Онлайн-торговля<br />одеждой растёт</div>
+        <div class="a-body">Объём онлайн-торговли одеждой в России превысил 1,5 трлн ₽ в 2025 году.</div>
+        <div class="a-stat">
+          <div class="num">+25%</div>
+          <div class="unit">в год</div>
+        </div>
+      </div>
+
+      <div class="a-card">
+        <div class="a-num">02</div>
+        <div class="a-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M17 7H9.5a2.5 2.5 0 0 0 0 5h5a2.5 2.5 0 0 1 0 5H7"/></svg>
+        </div>
+        <div class="a-label">Проблема</div>
+        <div class="a-title">Маркетплейсы<br />забирают маржу</div>
+        <div class="a-body">Wildberries и Lamoda удерживают комиссию, ограничивают витрину и не передают данные о покупателях.</div>
+        <div class="a-stat">
+          <div class="num">15–25<span style="font-size:30px">%</span></div>
+          <div class="unit">комиссия</div>
+        </div>
+      </div>
+
+      <div class="a-card dark">
+        <div class="a-num">03</div>
+        <div class="a-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="a-label">Решение</div>
+        <div class="a-title">Собственная<br />платформа</div>
+        <div class="a-body">Полный контроль витрины, аналитики и прямой контакт с клиентом — без посредников.</div>
+        <div class="a-stat">
+          <div class="num">100%</div>
+          <div class="unit">контроль данных</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagenum">— 02 / 07 —</div>
+    <div class="corner-mark">CHAPTER · I</div>
+  </section>
+
+
+  <!-- ============================ SLIDE 3 — АНАЛИЗ АНАЛОГОВ ============================ -->
+  <section data-screen-label="03 Анализ аналогов">
+    <div class="watermark">ATELIER<span class="yr">·25</span></div>
+    <div class="topmeta">
+      <span>Докладчик</span>
+      <span class="dot"></span>
+      <span class="speaker">Фомин Владимир</span>
+    </div>
+
+    <div class="slide-head">
+      <div>
+        <div class="eyebrow">03 / 07 — Конкуренты</div>
+        <h1 class="slide-title">Анализ аналогов</h1>
+      </div>
+      <div class="slide-num-tag">5 КРИТЕРИЕВ × 3 КАТЕГОРИИ</div>
+    </div>
+
+    <div class="compare-table">
+      <!-- Header row -->
+      <div class="ct-cell ct-head"><span>Критерий</span></div>
+      <div class="ct-cell ct-head"><div><strong>Маркетплейсы</strong>WB · Lamoda</div></div>
+      <div class="ct-cell ct-head"><div><strong>Конструкторы</strong>Shopify · Tilda</div></div>
+      <div class="ct-cell ct-head atelier head"><div><strong>Atelier</strong>наш проект</div></div>
+
+      <!-- Row 1 -->
+      <div class="ct-cell ct-rowlabel">Комиссия</div>
+      <div class="ct-cell">15–25%</div>
+      <div class="ct-cell">Абонентская плата</div>
+      <div class="ct-cell atelier"><span class="check">Нет</span></div>
+
+      <!-- Row 2 -->
+      <div class="ct-cell ct-rowlabel">Кастомизация</div>
+      <div class="ct-cell">Минимальная</div>
+      <div class="ct-cell">Ограниченная</div>
+      <div class="ct-cell atelier"><span class="check">Полная</span></div>
+
+      <!-- Row 3 -->
+      <div class="ct-cell ct-rowlabel">Данные клиентов</div>
+      <div class="ct-cell">Не передаются</div>
+      <div class="ct-cell">Частично</div>
+      <div class="ct-cell atelier"><span class="check">Полный доступ</span></div>
+
+      <!-- Row 4 -->
+      <div class="ct-cell ct-rowlabel">Собственный бэкенд</div>
+      <div class="ct-cell">Нет</div>
+      <div class="ct-cell">Нет</div>
+      <div class="ct-cell atelier"><span class="check">Да</span></div>
+
+      <!-- Row 5 -->
+      <div class="ct-cell ct-rowlabel">Подходит для обучения</div>
+      <div class="ct-cell">Нет</div>
+      <div class="ct-cell">Нет</div>
+      <div class="ct-cell atelier"><span class="check">Да</span></div>
+    </div>
+
+    <div class="pagenum">— 03 / 07 —</div>
+    <div class="corner-mark">CHAPTER · II</div>
+  </section>
+
+
+  <!-- ============================ SLIDE 4 — TECH STACK ============================ -->
+  <section data-screen-label="04 Технологический стек">
+    <div class="watermark">ATELIER<span class="yr">·25</span></div>
+    <div class="topmeta">
+      <span>Докладчик</span>
+      <span class="dot"></span>
+      <span class="speaker">Фомин Владимир</span>
+    </div>
+
+    <div class="slide-head">
+      <div>
+        <div class="eyebrow">04 / 07 — Инструменты</div>
+        <h1 class="slide-title">Технологический стек</h1>
+      </div>
+      <div class="slide-num-tag">14 ТЕХНОЛОГИЙ · 3 СЛОЯ</div>
+    </div>
+
+    <div class="stack-grid">
+      <!-- Frontend -->
+      <div class="stack-card">
+        <div class="stack-head">
+          <div class="stack-title">Frontend</div>
+          <div class="stack-tag">CLIENT</div>
+        </div>
+        <ul class="stack-list">
+          <li class="stack-item">
+            <div class="stack-bullet">Re</div>
+            <div class="stack-name">React</div>
+            <div class="stack-meta">v19</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Ts</div>
+            <div class="stack-name">TypeScript</div>
+            <div class="stack-meta">strict</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Tw</div>
+            <div class="stack-name">Tailwind CSS</div>
+            <div class="stack-meta">v4</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Rr</div>
+            <div class="stack-name">React Router</div>
+            <div class="stack-meta">v7</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Vi</div>
+            <div class="stack-name">Vite</div>
+            <div class="stack-meta">bundler</div>
+          </li>
+        </ul>
+        <div class="stack-footer">
+          <span>SPA · CSR</span>
+          <span>UI / UX</span>
+        </div>
+      </div>
+
+      <!-- Backend -->
+      <div class="stack-card">
+        <div class="stack-head">
+          <div class="stack-title">Backend</div>
+          <div class="stack-tag">SERVER</div>
+        </div>
+        <ul class="stack-list">
+          <li class="stack-item">
+            <div class="stack-bullet">Fa</div>
+            <div class="stack-name">FastAPI</div>
+            <div class="stack-meta">async</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Sa</div>
+            <div class="stack-name">SQLAlchemy</div>
+            <div class="stack-meta">v2</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Al</div>
+            <div class="stack-name">Alembic</div>
+            <div class="stack-meta">migrations</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Pg</div>
+            <div class="stack-name">PostgreSQL</div>
+            <div class="stack-meta">RDBMS</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Jw</div>
+            <div class="stack-name">JWT + bcrypt</div>
+            <div class="stack-meta">auth</div>
+          </li>
+        </ul>
+        <div class="stack-footer">
+          <span>REST API</span>
+          <span>PYTHON 3.12</span>
+        </div>
+      </div>
+
+      <!-- Infra -->
+      <div class="stack-card">
+        <div class="stack-head">
+          <div class="stack-title">Инфраструктура</div>
+          <div class="stack-tag">OPS</div>
+        </div>
+        <ul class="stack-list">
+          <li class="stack-item">
+            <div class="stack-bullet">Dc</div>
+            <div class="stack-name">Docker Compose</div>
+            <div class="stack-meta">orchestrate</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">Nx</div>
+            <div class="stack-name">nginx</div>
+            <div class="stack-meta">reverse proxy</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">01</div>
+            <div class="stack-name">DB · контейнер</div>
+            <div class="stack-meta">postgres</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">02</div>
+            <div class="stack-name">API · контейнер</div>
+            <div class="stack-meta">fastapi</div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-bullet">03</div>
+            <div class="stack-name">Web · контейнер</div>
+            <div class="stack-meta">nginx + spa</div>
+          </li>
+        </ul>
+        <div class="stack-footer">
+          <span>3 КОНТЕЙНЕРА</span>
+          <span>DEPLOY</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagenum">— 04 / 07 —</div>
+    <div class="corner-mark">CHAPTER · III</div>
+  </section>
+
+
+  <!-- ============================ SLIDE 5 — АРХИТЕКТУРА ============================ -->
+  <section data-screen-label="05 Архитектура">
+    <div class="watermark">ATELIER<span class="yr">·25</span></div>
+    <div class="topmeta">
+      <span>Докладчик</span>
+      <span class="dot"></span>
+      <span class="speaker">Демидов Максим</span>
+    </div>
+
+    <div class="slide-head">
+      <div>
+        <div class="eyebrow">05 / 07 — Схема системы</div>
+        <h1 class="slide-title">Архитектура системы</h1>
+      </div>
+      <div class="slide-num-tag">DATA FLOW · LAYERS · AUTH</div>
+    </div>
+
+    <div class="arch-wrap">
+      <div class="arch-main">
+        <div class="arch-section-title">Поток данных · слева направо</div>
+        <div class="flow">
+          <div class="flow-node">
+            <div class="nname">Браузер</div>
+            <div class="nport">client</div>
+          </div>
+          <div class="arrow">
+            <svg viewBox="0 0 28 14"><path d="M0 7 H22 M16 1 L22 7 L16 13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flow-node dark">
+            <div class="nname">nginx</div>
+            <div class="nport">:80</div>
+          </div>
+          <div class="arrow">
+            <svg viewBox="0 0 28 14"><path d="M0 7 H22 M16 1 L22 7 L16 13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flow-node">
+            <div class="nname">FastAPI</div>
+            <div class="nport">:8000</div>
+          </div>
+          <div class="arrow">
+            <svg viewBox="0 0 28 14"><path d="M0 7 H22 M16 1 L22 7 L16 13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flow-node">
+            <div class="nname">PostgreSQL</div>
+            <div class="nport">:5432</div>
+          </div>
+        </div>
+
+        <div class="fork">
+          <div class="fork-title">Маршрутизация через nginx</div>
+          <div class="fork-rows">
+            <span class="path">/api/*</span>
+            <span class="arr">→</span>
+            <span>FastAPI · бизнес-логика и данные</span>
+            <span class="path">/*</span>
+            <span class="arr">→</span>
+            <span>React SPA · статика (HTML / JS / CSS)</span>
+          </div>
+        </div>
+
+        <div class="layers-title">Слои бэкенда</div>
+        <div class="layers">
+          <div class="layer"><span class="lnum">L1</span>Routes</div>
+          <div class="layer"><span class="lnum">L2</span>Services</div>
+          <div class="layer"><span class="lnum">L3</span>Repositories</div>
+          <div class="layer"><span class="lnum">L4</span>Models</div>
+          <div class="layer final"><span class="lnum">L5</span>База данных</div>
+        </div>
+      </div>
+
+      <div class="arch-side">
+        <div class="tag">— Аутентификация —</div>
+        <h3>JWT Auth</h3>
+
+        <div class="token">
+          <div class="tname">ACCESS TOKEN</div>
+          <div class="ttime">30 минут</div>
+          <div class="tdesc">Короткоживущий, передаётся в заголовке Authorization.</div>
+        </div>
+
+        <div class="token">
+          <div class="tname">REFRESH TOKEN</div>
+          <div class="ttime">30 дней</div>
+          <div class="tdesc">Хранится в httpOnly-cookie, выдаёт новые access-токены.</div>
+        </div>
+
+        <div class="rotate-note">→ Ротация при каждом обновлении</div>
+      </div>
+    </div>
+
+    <div class="pagenum">— 05 / 07 —</div>
+    <div class="corner-mark">CHAPTER · III</div>
+  </section>
+
+
+  <!-- ============================ SLIDE 6 — ДЕМО ============================ -->
+  <section data-screen-label="06 Демонстрация">
+    <div class="watermark">ATELIER<span class="yr">·25</span></div>
+    <div class="topmeta">
+      <span>Докладчики</span>
+      <span class="dot"></span>
+      <span class="speaker">Фомин Владимир · Рахманинов Савва</span>
+    </div>
+
+    <div class="slide-head">
+      <div>
+        <div class="eyebrow">06 / 07 — Скриншоты</div>
+        <h1 class="slide-title">Демонстрация системы</h1>
+      </div>
+      <div class="slide-num-tag">5 FRONTEND + 2 BACKEND</div>
+    </div>
+
+    <div style="flex:1; display:flex; flex-direction:column; gap:24px;">
+      <div class="demo-section-label">Frontend · клиентская часть</div>
+      <div class="demo-row fe">
+        <div class="demo-card">
+          <div class="demo-img">[ home.png ]</div>
+          <div class="demo-meta"><span class="demo-label">Главная страница</span><span class="demo-num">FE-01</span></div>
+        </div>
+        <div class="demo-card">
+          <div class="demo-img">[ catalog.png ]</div>
+          <div class="demo-meta"><span class="demo-label">Каталог с фильтрами</span><span class="demo-num">FE-02</span></div>
+        </div>
+        <div class="demo-card">
+          <div class="demo-img">[ product.png ]</div>
+          <div class="demo-meta"><span class="demo-label">Карточка товара</span><span class="demo-num">FE-03</span></div>
+        </div>
+        <div class="demo-card">
+          <div class="demo-img">[ cart.png ]</div>
+          <div class="demo-meta"><span class="demo-label">Корзина</span><span class="demo-num">FE-04</span></div>
+        </div>
+        <div class="demo-card">
+          <div class="demo-img">[ account.png ]</div>
+          <div class="demo-meta"><span class="demo-label">Личный кабинет</span><span class="demo-num">FE-05</span></div>
+        </div>
+      </div>
+
+      <div class="demo-section-label">Backend · серверная часть</div>
+      <div class="demo-row be" style="grid-template-columns: 1fr 1fr;">
+        <div class="demo-card" style="display:grid; grid-template-columns: 1.4fr 1fr; align-items:stretch;">
+          <div class="demo-img dark" style="aspect-ratio:auto; min-height: 140px;">[ swagger-ui.png ]</div>
+          <div class="demo-meta" style="flex-direction:column; align-items:flex-start; justify-content:center; padding: 22px 24px; gap: 8px;">
+            <span class="demo-num">BE-01</span>
+            <span class="demo-label" style="font-size:18px;">Swagger UI<br/>документация API</span>
+          </div>
+        </div>
+        <div class="demo-card" style="display:grid; grid-template-columns: 1.4fr 1fr; align-items:stretch;">
+          <div class="demo-img dark" style="aspect-ratio:auto; min-height: 140px;">[ docker-logs.png ]</div>
+          <div class="demo-meta" style="flex-direction:column; align-items:flex-start; justify-content:center; padding: 22px 24px; gap: 8px;">
+            <span class="demo-num">BE-02</span>
+            <span class="demo-label" style="font-size:18px;">Логи<br/>Docker</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagenum">— 06 / 07 —</div>
+    <div class="corner-mark">CHAPTER · IV</div>
+  </section>
+
+
+  <!-- ============================ SLIDE 7 — БУДУЩЕЕ РАЗВИТИЕ ============================ -->
+  <section data-screen-label="07 Возможные улучшения">
+    <div class="watermark">ATELIER<span class="yr">·25</span></div>
+    <div class="topmeta">
+      <span>Докладчик</span>
+      <span class="dot"></span>
+      <span class="speaker">Круцяк Глеб</span>
+    </div>
+
+    <div class="slide-head">
+      <div>
+        <div class="eyebrow">07 / 07 — Roadmap</div>
+        <h1 class="slide-title">Возможные улучшения</h1>
+      </div>
+      <div class="slide-num-tag">2 НАПРАВЛЕНИЯ · 9 ИНИЦИАТИВ</div>
+    </div>
+
+    <div class="future-grid">
+      <div class="future-col">
+        <div class="future-col-head">
+          <div class="future-col-title">Функциональные</div>
+          <div class="future-col-num">FN · 04</div>
+        </div>
+        <ul class="future-list">
+          <li class="future-item">
+            <div class="fi-num">01</div>
+            <div class="fi-text">Галерея нескольких фото у товара</div>
+            <div class="fi-tag">UX</div>
+          </li>
+          <li class="future-item">
+            <div class="fi-num">02</div>
+            <div class="fi-text">Отзывы и рейтинги</div>
+            <div class="fi-tag">SOCIAL</div>
+          </li>
+          <li class="future-item">
+            <div class="fi-num">03</div>
+            <div class="fi-text">Промокоды и программа лояльности</div>
+            <div class="fi-tag">MARKETING</div>
+          </li>
+          <li class="future-item">
+            <div class="fi-num">04</div>
+            <div class="fi-text">Push-уведомления о статусе заказа</div>
+            <div class="fi-tag">NOTIFY</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="future-col">
+        <div class="future-col-head">
+          <div class="future-col-title">Технические</div>
+          <div class="future-col-num">TECH · 05</div>
+        </div>
+        <ul class="future-list">
+          <li class="future-item dark">
+            <div class="fi-num">01</div>
+            <div class="fi-text">Автотесты на pytest</div>
+            <div class="fi-tag">QA</div>
+          </li>
+          <li class="future-item dark">
+            <div class="fi-num">02</div>
+            <div class="fi-text">Кэширование через Redis</div>
+            <div class="fi-tag">PERF</div>
+          </li>
+          <li class="future-item dark">
+            <div class="fi-num">03</div>
+            <div class="fi-text">CI/CD пайплайн</div>
+            <div class="fi-tag">DEVOPS</div>
+          </li>
+          <li class="future-item dark">
+            <div class="fi-num">04</div>
+            <div class="fi-text">S3-хранилище для изображений</div>
+            <div class="fi-tag">STORAGE</div>
+          </li>
+          <li class="future-item dark">
+            <div class="fi-num">05</div>
+            <div class="fi-text">Аналитический дашборд для администратора</div>
+            <div class="fi-tag">ADMIN</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pagenum">— 07 / 07 —</div>
+    <div class="corner-mark">FIN ·</div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>

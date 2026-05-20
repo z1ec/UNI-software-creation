@@ -1,10 +1,15 @@
-import Header from "./components/Header"
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import AppRouter from "./router";
 
 function App() {
-
   return (
-    <Header />
-  )
+    <AuthProvider>
+      <CartProvider>
+        <AppRouter />
+      </CartProvider>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

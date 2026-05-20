@@ -1,41 +1,64 @@
-from datetime import datetime
-from typing import Optional
-from zoneinfo import ZoneInfo
-
-from sqlalchemy.orm import Session
-
 from backend.app.models.product import Product
-from backend.app.repositories.product_repository import (
-    get_product_rating_aggregate,
-    get_product_stock_sum,
-)
-from backend.app.schemas.product import ProductRatingSchema
+from backend.app.schemas.product import ProductDetailSchema, ProductListItemSchema
 
-MOSCOW_TZ = ZoneInfo("Europe/Moscow")
 
-# переделать через ормальный часовой пояс
-def as_moscow_aware(value: datetime) -> datetime:
-    if value.tzinfo is None:
-        return value.replace(tzinfo=MOSCOW_TZ)
-    return value.astimezone(MOSCOW_TZ)
+def _primary_image(product: Product) -> str | None:
+    for img in product.images:
+        if img.is_primary:
+            return img.url
+    return product.images[0].url if product.images else None
 
-# возвращает самую большую и актуальную скидку на товар
-def active_discount_value(product: Product) -> Optional[int]:
-    now_moscow = datetime.now(MOSCOW_TZ)
-    active_discounts = [
-        discount.discount
-        for discount in product.discounts
-        if as_moscow_aware(discount.t_start) <= now_moscow <= as_moscow_aware(discount.t_end)
-    ]
-    if not active_discounts:
-        return None
-    return max(active_discounts)
 
-# вычисляет rating_count и rating_avg
-def build_rating_from_db(product_id: int, db: Session) -> ProductRatingSchema:
-    rating_count, rating_avg = get_product_rating_aggregate(product_id, db)
-    return ProductRatingSchema(rating_avg=rating_avg, rating_count=rating_count)
+def _total_stock(product: Product) -> int:
+    return sum(s.stock for s in product.sizes)
 
-# вычисляет остаток товаров по сумме остатка размеров
-def get_product_stock(product_id: int, db: Session) -> int:
-    return get_product_stock_sum(product_id, db)
+
+def _final_price(price: float, discount: int | None) -> float:
+    if discount:
+        return round(price * (1 - discount / 100), 2)
+    return price
+
+
+def build_product_list_item(product: Product) -> ProductListItemSchema:
+    from backend.app.schemas.product import CategorySchema
+
+    return ProductListItemSchema(
+        id=product.id,
+        title=product.title,
+        brand=product.brand,
+        gender=product.gender,
+        category=CategorySchema.model_validate(product.category) if product.category else None,
+        price=product.price,
+        discount=product.discount,
+        final_price=_final_price(product.price, product.discount),
+        is_new=product.is_new,
+        image=_primary_image(product),
+        total_stock=_total_stock(product),
+    )
+
+
+def build_product_detail(
+    product: Product,
+    *,
+    is_in_favorites: bool = False,
+    is_in_cart: bool = False,
+) -> ProductDetailSchema:
+    from backend.app.schemas.product import CategorySchema, SizeSchema
+
+    return ProductDetailSchema(
+        id=product.id,
+        title=product.title,
+        description=product.description,
+        brand=product.brand,
+        gender=product.gender,
+        category=CategorySchema.model_validate(product.category) if product.category else None,
+        price=product.price,
+        discount=product.discount,
+        final_price=_final_price(product.price, product.discount),
+        is_new=product.is_new,
+        images=[img.url for img in sorted(product.images, key=lambda i: i.sort_order)],
+        sizes=[SizeSchema(size=s.size, stock=s.stock) for s in product.sizes],
+        total_stock=_total_stock(product),
+        is_in_favorites=is_in_favorites,
+        is_in_cart=is_in_cart,
+    )
