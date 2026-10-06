@@ -1,165 +1,94 @@
-# UNI Software Creation
+# Atelier: Online Clothing Store
 
-Полноценное веб-приложение интернет-магазина с разделением на:
-- `frontend` (React + Vite)
-- `backend` (FastAPI + SQLAlchemy)
-- `db` (PostgreSQL)
+Full-stack online clothing store: catalog, cart, favorites, checkout and an admin panel.
 
-Проект запускается через `docker compose` и ориентирован на дальнейшее расширение каталога товаров, карточек и API.
+> **Context:** team project from my second year at RTU MIREA. A team of 5; I was the team lead and built the frontend. React, TypeScript, FastAPI, PostgreSQL. 2026. [Project presentation](https://z1ec.github.io/UNI-software-creation/)
 
-Презентация к проекту - https://z1ec.github.io/UNI-software-creation/#7
+<!-- Add a screenshot here: ![Screenshot](docs/главная%20страница.png) -->
 
-## Стек технологий
+## Features
 
-### Frontend
-- React 19
-- TypeScript
-- Vite
-- ESLint
-- Nginx (раздача production-сборки)
+- Catalog with search, filters (category, gender, new arrivals) and pagination. The API also supports a price range.
+- Product pages with an image gallery and sizes with stock.
+- Cart, favorites and checkout. Prices are saved with each order, so later price changes do not alter past orders.
+- Registration and login with JWT access and refresh tokens. Passwords are hashed with bcrypt.
+- Admin panel behind a role check: manage products and categories, change user roles, update order status.
 
-### Backend
-- FastAPI
-- Uvicorn
-- SQLAlchemy 2.0
-- Alembic (миграции)
-- Pydantic / pydantic-settings
-- Psycopg 3
+## Tech stack
 
-### Data & Infra
-- PostgreSQL 16 (контейнер)
-- Docker, Docker Compose
+| Layer | Technology |
+| --- | --- |
+| Frontend | React 19, TypeScript, Vite, Tailwind CSS 4, React Router 7 |
+| Backend | Python, FastAPI, SQLAlchemy 2.0, Alembic, Pydantic, psycopg 3 |
+| Auth | python-jose (JWT), passlib with bcrypt |
+| Database | PostgreSQL 16 |
+| Infrastructure | Docker Compose, Nginx |
 
-## Архитектура
+## Architecture
 
-```text
-Browser
-  -> Frontend (Nginx, :8080)
-    -> /api/* proxy
-      -> Backend (FastAPI, :8000)
-        -> PostgreSQL (:5432)
+```mermaid
+flowchart LR
+    U[Browser] --> N[Nginx<br/>React build]
+    N -->|"/api/*"| API[FastAPI routers]
+    API --> S[Services]
+    S --> R[Repositories]
+    R --> DB[(PostgreSQL)]
 ```
 
-Сервисы из `docker-compose.yml`:
-- `frontend` — сборка React-приложения и раздача статики через Nginx.
-- `backend` — API и бизнес-логика.
-- `db` — база данных PostgreSQL с volume `postgres_data`.
+- **Nginx** serves the React build and proxies `/api/` to the backend, so the frontend and the API share one origin.
+- **The backend is layered:** routers handle HTTP and validation, services hold the business logic (cart, checkout, auth), repositories are the only layer that talks to the database.
+- **Migrations:** on start the backend container applies Alembic migrations and seeds demo data, then launches the API.
+- **Auth:** a short-lived access token (30 minutes) plus a refresh token (30 days). Admin routes check the role from the database.
 
-## Структура проекта
+## API overview
+
+| Prefix | Purpose |
+| --- | --- |
+| `/api/auth` | register, login, refresh, logout, current user |
+| `/api/products` | list with filters and pagination, details; create, update, delete for admins |
+| `/api/categories` | list; create for admins |
+| `/api/cart` | view, add, change quantity, remove, clear |
+| `/api/favorites` | list, add, remove |
+| `/api/orders` | order history, order details, checkout |
+| `/api/users` | view and edit own profile |
+| `/api/admin` | users and roles, all orders, order status |
+
+Full interactive docs: http://localhost:8000/docs.
+
+## Project structure
 
 ```text
-.
-├── backend/
-│   ├── app/
-│   │   ├── config.py
-│   │   ├── database.py
-│   │   └── models.py
-│   ├── alembic/
-│   ├── main.py
-│   ├── Dockerfile
-│   └── entrypoint.sh
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── router/
-│   │   ├── main.tsx
-│   │   └── index.css
-│   ├── Dockerfile
-│   ├── nginx.conf
-│   └── package.json
-├── docker-compose.yml
-├── init-db.sql
-└── requirements.txt
+backend/
+  app/
+    api/           routers
+    services/      business logic
+    repositories/  database access
+    models/        SQLAlchemy models
+    schemas/       Pydantic schemas
+    core/          settings, JWT and password hashing
+  alembic/         migrations
+  seed.py          demo data
+frontend/
+  src/
+    pages/         catalog, product, cart, favorites, profile, admin
+    components/    layout, protected and admin routes, UI kit
+    context/       auth and cart state
+    api/           API client
+docs/              presentation and screenshots
 ```
 
-## Быстрый старт (Docker Compose)
-
-Запуск всех сервисов:
+## Getting started
 
 ```bash
+cp .env.example .env    # then change the passwords and JWT_SECRET_KEY
 docker compose up -d --build
 ```
 
-Проверка статуса:
+- Store: http://localhost
+- API docs: http://localhost:8000/docs
 
-```bash
-docker compose ps
-```
+## What I'd improve next
 
-Логи:
-
-```bash
-docker compose logs -f
-```
-
-Остановка:
-
-```bash
-docker compose down
-```
-
-Остановка с удалением volume БД:
-
-```bash
-docker compose down -v
-```
-
-## Локальный запуск без Docker
-
-### Backend
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## API (текущие endpoint'ы)
-
-- `GET /products` — список всех товаров.
-- `GET /products/{productID}` — товар по ID.
-
-## Миграции БД
-
-В Docker-режиме миграции применяются автоматически в `backend/entrypoint.sh`:
-
-```bash
-alembic -c /app/backend/alembic.ini upgrade head
-```
-
-Локально:
-
-```bash
-alembic -c backend/alembic.ini upgrade head
-```
-
-
-## Полезные команды
-
-Переcборка только frontend:
-
-```bash
-docker compose up -d --build frontend
-```
-
-Переcборка только backend:
-
-```bash
-docker compose up -d --build backend
-```
-
-Проверка backend API:
-
-```bash
-curl http://localhost:8000/products
-```
+- Add pytest tests for checkout and cart logic.
+- Decrease size stock at checkout and reject orders for sizes that are out of stock.
+- Store prices as `Numeric` instead of `float` to avoid rounding errors.
