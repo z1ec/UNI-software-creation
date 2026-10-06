@@ -135,3 +135,5 @@ tailwind.config.js.timestamp-*
 
 .DS_Store
 Thumbs.db
+database/data/
+!.env.example
